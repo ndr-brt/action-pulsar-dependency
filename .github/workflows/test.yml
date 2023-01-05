@@ -1,0 +1,21 @@
+name: CI
+on:
+  - push
+  - pull_request
+jobs:
+  test:
+    name: Test
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, macos-latest, windows-2019]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install
+      - name: Setup Pulsar Editor
+        uses: ./
+      - run: pulsar -v
